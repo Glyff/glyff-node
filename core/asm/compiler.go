@@ -23,8 +23,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core/vm"
 )
 
 // Compiler contains information about the parsed source
@@ -114,7 +114,7 @@ func (c *Compiler) Compile() (string, []error) {
 }
 
 // next returns the next token and increments the
-// position.
+// posititon.
 func (c *Compiler) next() token {
 	token := c.tokens[c.pos]
 	c.pos++
@@ -122,7 +122,7 @@ func (c *Compiler) next() token {
 }
 
 // compile line compiles a single line instruction e.g.
-// "push 1", "jump @label".
+// "push 1", "jump @labal".
 func (c *Compiler) compileLine() error {
 	n := c.next()
 	if n.typ != lineStart {

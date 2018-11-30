@@ -20,11 +20,11 @@ import (
 	"bytes"
 	"context"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 var sha3_nil = crypto.Keccak256Hash(nil)
@@ -144,9 +144,7 @@ func GetBlockReceipts(ctx context.Context, odr OdrBackend, hash common.Hash, num
 		genesis := core.GetCanonicalHash(odr.Database(), 0)
 		config, _ := core.GetChainConfig(odr.Database(), genesis)
 
-		if err := core.SetReceiptsData(config, block, receipts); err != nil {
-			return nil, err
-		}
+		core.SetReceiptsData(config, block, receipts)
 		core.WriteBlockReceipts(odr.Database(), hash, number, receipts)
 	}
 	return receipts, nil

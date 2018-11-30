@@ -21,11 +21,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/glyff/glyff-node/accounts/abi"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/ethdb"
 )
 
 func TestDefaults(t *testing.T) {

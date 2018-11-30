@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-// package web3ext contains geth specific web3.js extensions.
+// package web3ext contains glyff specific web3.js extensions.
 package web3ext
 
 var Modules = map[string]string{
@@ -30,6 +30,7 @@ var Modules = map[string]string{
 	"shh":        Shh_JS,
 	"swarmfs":    SWARMFS_JS,
 	"txpool":     TxPool_JS,
+	"zsl":        ZSL_JS,
 }
 
 const Chequebook_JS = `
@@ -627,6 +628,130 @@ web3._extend({
 				status.queued = web3._extend.utils.toDecimal(status.queued);
 				return status;
 			}
+		}),
+	]
+});
+`
+
+const ZSL_JS = `
+web3._extend({
+	property: 'zsl',
+	methods:
+	[
+		new web3._extend.Method({
+			name: 'loadTracker',
+			call: 'zsl_loadTracker',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'saveTracker',
+			call: 'zsl_saveTracker',
+			params: 2
+		}),
+		new web3._extend.Method({
+			name: 'getCommitment',
+			call: 'zsl_getCommitment',
+			params: 3
+		}),
+		new web3._extend.Method({
+			name: 'getSendNullifier',
+			call: 'zsl_getSendNullifier',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'getSpendNullifier',
+			call: 'zsl_getSpendNullifier',
+			params: 2
+		}),
+		new web3._extend.Method({
+			name: 'createShielding',
+			call: 'zsl_createShielding',
+			params: 3
+		}),
+		new web3._extend.Method({
+			name: 'createUnshielding',
+			call: 'zsl_createUnshielding',
+			params: 5
+		}),
+		new web3._extend.Method({
+			name: 'createShieldedTransfer',
+			call: 'zsl_createShieldedTransfer',
+			params: 16
+		}),
+		new web3._extend.Method({
+			name: 'verifyShieldedTransfer',
+			call: 'zsl_verifyShieldedTransfer',
+			params: 8
+		}),
+		new web3._extend.Method({
+			name: 'verifyShielding',
+			call: 'zsl_verifyShielding',
+			params: 4
+		}),
+		new web3._extend.Method({
+			name: 'verifyUnshielding',
+			call: 'zsl_verifyUnshielding',
+			params: 4
+		}),
+		new web3._extend.Method({
+			name: 'getNewAddress',
+			call: 'zsl_getNewAddress',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'GenerateKey',
+			call: 'zsl_generateKey',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'KeyToAddress',
+			call: 'zsl_keyToAddress',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'KeyToViewingKey',
+			call: 'zsl_keyToViewingKey',
+			params: 1
+		}),		
+		new web3._extend.Method({
+			name: 'GenerateZKeypair',
+			call: 'zsl_generateZKeypair',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'TestZaddr',
+			call: 'zsl_testZaddr',
+			params: 1
+		}),
+		new web3._extend.Method({
+			name: 'NoteDecrypt',
+			call: 'zsl_noteDecrypt',
+			params: 2
+		}),		
+		new web3._extend.Method({
+			name: 'Test',
+			call: 'zsl_test',
+			params: 0
+		}),				
+		new web3._extend.Method({
+			name: 'getRandomness',
+			call: 'zsl_getRandomness',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'debugShielding',
+			call: 'zsl_debugShielding',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'debugUnshielding',
+			call: 'zsl_debugUnshielding',
+			params: 0
+		}),
+		new web3._extend.Method({
+			name: 'debugShieldedTransfer',
+			call: 'zsl_debugShieldedTransfer',
+			params: 0
 		}),
 	]
 });

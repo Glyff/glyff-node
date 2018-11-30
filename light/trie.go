@@ -21,12 +21,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/trie"
 )
 
 func NewState(ctx context.Context, head *types.Header, odr OdrBackend) *state.StateDB {

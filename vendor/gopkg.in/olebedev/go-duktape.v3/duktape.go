@@ -5,7 +5,6 @@ package duktape
 #cgo windows CFLAGS: -O3 -Wall -fomit-frame-pointer -fstrict-aliasing
 #cgo linux LDFLAGS: -lm
 #cgo freebsd LDFLAGS: -lm
-#cgo openbsd LDFLAGS: -lm
 
 #include "duktape.h"
 #include "duk_logging.h"

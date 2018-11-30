@@ -17,8 +17,8 @@
 package eth
 
 import (
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/p2p"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/p2p"
 )
 
 var (

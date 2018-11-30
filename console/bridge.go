@@ -23,9 +23,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/usbwallet"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/accounts/usbwallet"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/rpc"
 	"github.com/robertkrimen/otto"
 )
 

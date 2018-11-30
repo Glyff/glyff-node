@@ -19,8 +19,8 @@ package runtime_test
 import (
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/vm/runtime"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/vm/runtime"
 )
 
 func ExampleExecute() {

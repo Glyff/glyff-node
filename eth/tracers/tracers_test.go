@@ -25,19 +25,19 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/tests"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/hexutil"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/tests"
 )
 
 // To generate a new callTracer test, copy paste the makeTest method below into
-// a Geth console and call it with a transaction hash you which to export.
+// a Glyff console and call it with a transaction hash you which to export.
 
 /*
 // makeTest generates a callTracer test by running a prestate reassembled and a

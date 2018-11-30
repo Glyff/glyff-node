@@ -20,9 +20,9 @@ import (
 	"container/list"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/event"
 )
 
 // Implement our EthTest Manager

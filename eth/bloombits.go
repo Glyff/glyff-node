@@ -19,13 +19,13 @@ package eth
 import (
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/bitutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/bloombits"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/bitutil"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/bloombits"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/params"
 )
 
 const (

@@ -22,8 +22,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
 )
 
 //metrics variables

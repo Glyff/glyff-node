@@ -23,15 +23,15 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/light"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/light"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/trie"
 )
 
 var (

@@ -23,14 +23,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/bitutil"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/bloombits"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/node"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/bitutil"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/bloombits"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/node"
 )
 
 func BenchmarkBloomBits512(b *testing.B) {
@@ -64,7 +64,7 @@ func BenchmarkBloomBits32k(b *testing.B) {
 const benchFilterCnt = 2000
 
 func benchmarkBloomBits(b *testing.B, sectionSize uint64) {
-	benchDataDir := node.DefaultDataDir() + "/geth/chaindata"
+	benchDataDir := node.DefaultDataDir() + "/glyff/chaindata"
 	fmt.Println("Running bloombits benchmark   section size:", sectionSize)
 
 	db, err := ethdb.NewLDBDatabase(benchDataDir, 128, 1024)
@@ -174,7 +174,7 @@ func clearBloomBits(db ethdb.Database) {
 }
 
 func BenchmarkNoBloomBits(b *testing.B) {
-	benchDataDir := node.DefaultDataDir() + "/geth/chaindata"
+	benchDataDir := node.DefaultDataDir() + "/glyff/chaindata"
 	fmt.Println("Running benchmark without bloombits")
 	db, err := ethdb.NewLDBDatabase(benchDataDir, 128, 1024)
 	if err != nil {

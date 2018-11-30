@@ -22,14 +22,14 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/ens"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/swarm/network"
-	"github.com/ethereum/go-ethereum/swarm/services/swap"
-	"github.com/ethereum/go-ethereum/swarm/storage"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/contracts/ens"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/node"
+	"github.com/glyff/glyff-node/swarm/network"
+	"github.com/glyff/glyff-node/swarm/services/swap"
+	"github.com/glyff/glyff-node/swarm/storage"
 )
 
 const (

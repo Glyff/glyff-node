@@ -34,9 +34,9 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 func init() {

@@ -25,10 +25,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
 	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
 )
 

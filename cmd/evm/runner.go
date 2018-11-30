@@ -27,16 +27,16 @@ import (
 
 	goruntime "runtime"
 
-	"github.com/ethereum/go-ethereum/cmd/evm/internal/compiler"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/core/vm/runtime"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/cmd/evm/internal/compiler"
+	"github.com/glyff/glyff-node/cmd/utils"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/core/vm/runtime"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/params"
 	cli "gopkg.in/urfave/cli.v1"
 )
 

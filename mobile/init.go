@@ -16,13 +16,13 @@
 
 // Contains initialization code for the mbile library.
 
-package geth
+package glyff
 
 import (
 	"os"
 	"runtime"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/log"
 )
 
 func init() {

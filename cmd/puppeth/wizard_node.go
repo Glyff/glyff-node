@@ -21,9 +21,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/accounts/keystore"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/log"
 )
 
 // deployNode creates a new node configuration based on some user input.

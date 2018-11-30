@@ -24,7 +24,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/log"
 )
 
 type brokenLimitedReader struct {

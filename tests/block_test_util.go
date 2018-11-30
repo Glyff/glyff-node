@@ -24,17 +24,17 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/hexutil"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/consensus/ethash"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 // A BlockTest checks handling of entire blocks.

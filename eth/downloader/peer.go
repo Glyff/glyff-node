@@ -29,9 +29,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
 )
 
 const (

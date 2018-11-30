@@ -24,13 +24,13 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 // DatabaseReader wraps the Get method of a backing data store.

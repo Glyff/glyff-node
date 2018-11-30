@@ -23,14 +23,14 @@ import (
 	"os"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/consensus/ethash"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/params"
 )
 
 func makeReceipt(addr common.Address) *types.Receipt {

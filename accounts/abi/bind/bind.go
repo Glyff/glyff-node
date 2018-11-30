@@ -28,7 +28,7 @@ import (
 	"text/template"
 	"unicode"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
+	"github.com/glyff/glyff-node/accounts/abi"
 	"golang.org/x/tools/imports"
 )
 
@@ -385,7 +385,8 @@ var methodNormalizer = map[Lang]func(string) string{
 	LangJava: decapitalise,
 }
 
-// capitalise makes a camel-case string which starts with an upper case character.
+// capitalise makes the first character of a string upper case, also removing any
+// prefixing underscores from the variable names.
 func capitalise(input string) string {
 	for len(input) > 0 && input[0] == '_' {
 		input = input[1:]
@@ -393,42 +394,12 @@ func capitalise(input string) string {
 	if len(input) == 0 {
 		return ""
 	}
-	return toCamelCase(strings.ToUpper(input[:1]) + input[1:])
+	return strings.ToUpper(input[:1]) + input[1:]
 }
 
-// decapitalise makes a camel-case string which starts with a lower case character.
+// decapitalise makes the first character of a string lower case.
 func decapitalise(input string) string {
-	for len(input) > 0 && input[0] == '_' {
-		input = input[1:]
-	}
-	if len(input) == 0 {
-		return ""
-	}
-	return toCamelCase(strings.ToLower(input[:1]) + input[1:])
-}
-
-// toCamelCase converts an under-score string to a camel-case string
-func toCamelCase(input string) string {
-	toupper := false
-
-	result := ""
-	for k, v := range input {
-		switch {
-		case k == 0:
-			result = strings.ToUpper(string(input[0]))
-
-		case toupper:
-			result += strings.ToUpper(string(v))
-			toupper = false
-
-		case v == '_':
-			toupper = true
-
-		default:
-			result += string(v)
-		}
-	}
-	return result
+	return strings.ToLower(input[:1]) + input[1:]
 }
 
 // structured checks whether a list of ABI data types has enough information to

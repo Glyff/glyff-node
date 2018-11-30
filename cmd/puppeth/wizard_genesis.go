@@ -25,10 +25,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/params"
 )
 
 // makeGenesis creates a new genesis struct based on some user input.

@@ -1,6 +1,6 @@
 ## Go Ethereum Dashboard
 
-The dashboard is a data visualizer integrated into geth, intended to collect and visualize useful information of an Ethereum node. It consists of two parts:
+The dashboard is a data visualizer integrated into glyff, intended to collect and visualize useful information of an Ethereum node. It consists of two parts:
 
 * The client visualizes the collected data.
 * The server collects the data, and updates the clients.
@@ -12,27 +12,28 @@ The client's UI uses [React][React] with JSX syntax, which is validated by the [
 As the dashboard depends on certain NPM packages (which are not included in the `go-ethereum` repo), these need to be installed first:
 
 ```
-$ (cd dashboard/assets && yarn install && yarn flow)
+$ (cd dashboard/assets && npm install)
+$ (cd dashboard/assets && ./node_modules/.bin/flow-typed install)
 ```
 
-Normally the dashboard assets are bundled into Geth via `go-bindata` to avoid external dependencies. Rebuilding Geth after each UI modification however is not feasible from a developer perspective. Instead, we can run `yarn dev` to watch for file system changes and refresh the browser automatically.
+Normally the dashboard assets are bundled into Glyff via `go-bindata` to avoid external dependencies. Rebuilding Glyff after each UI modification however is not feasible from a developer perspective. Instead, we can run `webpack` in watch mode to automatically rebundle the UI, and ask `glyff` to use external assets to not rely on compiled resources:
 
 ```
-$ geth --dashboard --vmodule=dashboard=5
-$ (cd dashboard/assets && yarn dev)
+$ (cd dashboard/assets && ./node_modules/.bin/webpack --watch)
+$ glyff --dashboard --dashboard.assets=dashboard/assets --vmodule=dashboard=5
 ```
 
-To bundle up the final UI into Geth, run `go generate`:
+To bundle up the final UI into Glyff, run `go generate`:
 
 ```
-$ (cd dashboard && go generate)
+$ go generate ./dashboard
 ```
 
 ### Static type checking
 
 Since JavaScript doesn't provide type safety, [Flow][Flow] is used to check types. These are only useful during development, so at the end of the process Babel will strip them.
 
-To take advantage of static type checking, your IDE needs to be prepared for it. In case of [Atom][Atom] a configuration guide can be found [here][Atom config]: Install the [Nuclide][Nuclide] package for Flow support, making sure it installs all of its support packages by enabling `Install Recommended Packages on Startup`, and set the path of the `flow-bin` which were installed previously by `yarn`.
+To take advantage of static type checking, your IDE needs to be prepared for it. In case of [Atom][Atom] a configuration guide can be found [here][Atom config]: Install the [Nuclide][Nuclide] package for Flow support, making sure it installs all of its support packages by enabling `Install Recommended Packages on Startup`, and set the path of the `flow-bin` which were installed previously by `npm`.
 
 For more IDE support install the `linter-eslint` package too, which finds the `.eslintrc` file, and provides real-time linting. Atom warns, that these two packages are incompatible, but they seem to work well together. For third-party library errors and auto-completion [flow-typed][flow-typed] is used.
 
@@ -40,7 +41,7 @@ For more IDE support install the `linter-eslint` package too, which finds the `.
 
 [Webpack][Webpack] offers handy tools for visualizing the bundle's dependency tree and space usage.
 
-* Generate the bundle's profile running `yarn stats`
+* Generate the bundle's profile running `webpack --profile --json > stats.json`
 * For the _dependency tree_ go to [Webpack Analyze][WA], and import `stats.json`
 * For the _space usage_ go to [Webpack Visualizer][WV], and import `stats.json`
 

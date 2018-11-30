@@ -21,17 +21,17 @@ import (
 	"fmt"
 	"sync/atomic"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/consensus"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/eth/downloader"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/params"
 )
 
 // Backend wraps all methods required for mining.
@@ -105,7 +105,8 @@ out:
 
 func (self *Miner) Start(coinbase common.Address) {
 	atomic.StoreInt32(&self.shouldStart, 1)
-	self.SetEtherbase(coinbase)
+	self.worker.setEtherbase(coinbase)
+	self.coinbase = coinbase
 
 	if atomic.LoadInt32(&self.canStart) == 0 {
 		log.Info("Network syncing, will start miner afterwards")

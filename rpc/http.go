@@ -27,16 +27,16 @@ import (
 	"mime"
 	"net"
 	"net/http"
-	"strings"
 	"sync"
 	"time"
 
 	"github.com/rs/cors"
+	"strings"
 )
 
 const (
-	contentType             = "application/json"
-	maxRequestContentLength = 1024 * 128
+	contentType                 = "application/json"
+	maxHTTPRequestContentLength = 1024 * 128
 )
 
 var nullAddr, _ = net.ResolveTCPAddr("tcp", "127.0.0.1:0")
@@ -169,8 +169,7 @@ func (srv *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// All checks passed, create a codec that reads direct from the request body
 	// untilEOF and writes the response to w and order the server to process a
 	// single request.
-	body := io.LimitReader(r.Body, maxRequestContentLength)
-	codec := NewJSONCodec(&httpReadWriteNopCloser{body, w})
+	codec := NewJSONCodec(&httpReadWriteNopCloser{r.Body, w})
 	defer codec.Close()
 
 	w.Header().Set("content-type", contentType)
@@ -183,8 +182,8 @@ func validateRequest(r *http.Request) (int, error) {
 	if r.Method == http.MethodPut || r.Method == http.MethodDelete {
 		return http.StatusMethodNotAllowed, errors.New("method not allowed")
 	}
-	if r.ContentLength > maxRequestContentLength {
-		err := fmt.Errorf("content length too large (%d>%d)", r.ContentLength, maxRequestContentLength)
+	if r.ContentLength > maxHTTPRequestContentLength {
+		err := fmt.Errorf("content length too large (%d>%d)", r.ContentLength, maxHTTPRequestContentLength)
 		return http.StatusRequestEntityTooLarge, err
 	}
 	mt, _, err := mime.ParseMediaType(r.Header.Get("content-type"))

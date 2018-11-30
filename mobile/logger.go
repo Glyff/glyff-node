@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with the go-ethereum library. If not, see <http://www.gnu.org/licenses/>.
 
-package geth
+package glyff
 
 import (
 	"os"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/log"
 )
 
 // SetVerbosity sets the global verbosity level (between 0 and 6 - see logger/verbosity.go).

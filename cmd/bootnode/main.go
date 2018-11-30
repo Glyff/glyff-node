@@ -24,13 +24,13 @@ import (
 	"net"
 	"os"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
+	"github.com/glyff/glyff-node/cmd/utils"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/p2p/discv5"
+	"github.com/glyff/glyff-node/p2p/nat"
+	"github.com/glyff/glyff-node/p2p/netutil"
 )
 
 func main() {

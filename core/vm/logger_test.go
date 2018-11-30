@@ -20,8 +20,8 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/params"
 )
 
 type dummyContractRef struct {
@@ -48,7 +48,7 @@ type dummyStateDB struct {
 
 func TestStoreCapture(t *testing.T) {
 	var (
-		env      = NewEVM(Context{}, nil, params.TestChainConfig, Config{})
+		env      = NewEVM(Context{}, nil, params.TestChainConfig, Config{EnableJit: false, ForceJit: false})
 		logger   = NewStructLogger(nil)
 		mem      = NewMemory()
 		stack    = newstack()

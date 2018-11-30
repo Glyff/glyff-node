@@ -21,10 +21,10 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
 )
 
 var (

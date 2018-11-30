@@ -37,13 +37,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/ethereum/go-ethereum/contracts/chequebook"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/p2p"
-	bzzswap "github.com/ethereum/go-ethereum/swarm/services/swap"
-	"github.com/ethereum/go-ethereum/swarm/services/swap/swap"
-	"github.com/ethereum/go-ethereum/swarm/storage"
+	"github.com/glyff/glyff-node/contracts/chequebook"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/p2p"
+	bzzswap "github.com/glyff/glyff-node/swarm/services/swap"
+	"github.com/glyff/glyff-node/swarm/services/swap/swap"
+	"github.com/glyff/glyff-node/swarm/storage"
 )
 
 //metrics variables

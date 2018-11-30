@@ -27,20 +27,20 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/mclock"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/mclock"
+	"github.com/glyff/glyff-node/consensus"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/trie"
 	"github.com/hashicorp/golang-lru"
 	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
 )
@@ -723,13 +723,10 @@ func (bc *BlockChain) Rollback(chain []common.Hash) {
 }
 
 // SetReceiptsData computes all the non-consensus fields of the receipts
-func SetReceiptsData(config *params.ChainConfig, block *types.Block, receipts types.Receipts) error {
+func SetReceiptsData(config *params.ChainConfig, block *types.Block, receipts types.Receipts) {
 	signer := types.MakeSigner(config, block.Number())
 
 	transactions, logIndex := block.Transactions(), uint(0)
-	if len(transactions) != len(receipts) {
-		return errors.New("transaction and receipt count mismatch")
-	}
 
 	for j := 0; j < len(receipts); j++ {
 		// The transaction hash can be retrieved from the transaction itself
@@ -757,7 +754,6 @@ func SetReceiptsData(config *params.ChainConfig, block *types.Block, receipts ty
 			logIndex++
 		}
 	}
-	return nil
 }
 
 // InsertReceiptChain attempts to complete an already existing header chain with
@@ -798,9 +794,7 @@ func (bc *BlockChain) InsertReceiptChain(blockChain types.Blocks, receiptChain [
 			continue
 		}
 		// Compute all the non-consensus fields of the receipts
-		if err := SetReceiptsData(bc.chainConfig, block, receipts); err != nil {
-			return i, fmt.Errorf("failed to set receipts data: %v", err)
-		}
+		SetReceiptsData(bc.chainConfig, block, receipts)
 		// Write all the data out into the database
 		if err := WriteBody(batch, block.Hash(), block.NumberU64(), block.Body()); err != nil {
 			return i, fmt.Errorf("failed to write block body: %v", err)

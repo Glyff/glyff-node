@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/consensus/ethash"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/params"
 )
 
 //go:generate gencodec -type DifficultyTest -field-override difficultyTestMarshaling -out gen_difficultytest.go

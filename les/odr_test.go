@@ -23,17 +23,17 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/light"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/eth"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/light"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 type odrTestFn func(ctx context.Context, db ethdb.Database, config *params.ChainConfig, bc *core.BlockChain, lc *light.LightChain, bhash common.Hash) []byte

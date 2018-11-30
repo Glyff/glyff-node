@@ -25,11 +25,11 @@ import (
 	"os"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/node"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/rpc"
 )
 
 // Node represents a node in a simulation network which is created by a
@@ -184,7 +184,7 @@ type ServiceContext struct {
 
 // RPCDialer is used when initialising services which need to connect to
 // other nodes in the network (for example a simulated Swarm node which needs
-// to connect to a Geth node to resolve ENS names)
+// to connect to a Glyff node to resolve ENS names)
 type RPCDialer interface {
 	DialRPC(id discover.NodeID) (*rpc.Client, error)
 }

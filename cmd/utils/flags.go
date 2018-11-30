@@ -28,34 +28,34 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/fdlimit"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/consensus/clique"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/dashboard"
-	"github.com/ethereum/go-ethereum/eth"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/eth/gasprice"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/ethstats"
-	"github.com/ethereum/go-ethereum/les"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
-	"github.com/ethereum/go-ethereum/params"
-	whisper "github.com/ethereum/go-ethereum/whisper/whisperv6"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/accounts/keystore"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/fdlimit"
+	"github.com/glyff/glyff-node/consensus"
+	"github.com/glyff/glyff-node/consensus/clique"
+	"github.com/glyff/glyff-node/consensus/ethash"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/dashboard"
+	"github.com/glyff/glyff-node/eth"
+	"github.com/glyff/glyff-node/eth/downloader"
+	"github.com/glyff/glyff-node/eth/gasprice"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/ethstats"
+	"github.com/glyff/glyff-node/les"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/node"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/p2p/discv5"
+	"github.com/glyff/glyff-node/p2p/nat"
+	"github.com/glyff/glyff-node/p2p/netutil"
+	"github.com/glyff/glyff-node/params"
+	whisper "github.com/glyff/glyff-node/whisper/whisperv5"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -208,6 +208,11 @@ var (
 		Name:  "dashboard.refresh",
 		Usage: "Dashboard metrics collection refresh rate",
 		Value: dashboard.DefaultConfig.Refresh,
+	}
+	DashboardAssetsFlag = cli.StringFlag{
+		Name:  "dashboard.assets",
+		Usage: "Developer flag to serve the dashboard from the local file system",
+		Value: dashboard.DefaultConfig.Assets,
 	}
 	// Ethash settings
 	EthashCacheDirFlag = DirectoryFlag{
@@ -729,7 +734,7 @@ func setIPC(ctx *cli.Context, cfg *node.Config) {
 }
 
 // makeDatabaseHandles raises out the number of allowed file handles per process
-// for Geth and returns half of the allowance to assign to the database.
+// for Glyff and returns half of the allowance to assign to the database.
 func makeDatabaseHandles() int {
 	limit, err := fdlimit.Current()
 	if err != nil {
@@ -761,7 +766,7 @@ func MakeAddress(ks *keystore.KeyStore, account string) (accounts.Account, error
 	log.Warn("-------------------------------------------------------------------")
 	log.Warn("Referring to accounts by order in the keystore folder is dangerous!")
 	log.Warn("This functionality is deprecated and will be removed in the future!")
-	log.Warn("Please use explicit addresses! (can search via `geth account list`)")
+	log.Warn("Please use explicit addresses! (can search via `glyff account list`)")
 	log.Warn("-------------------------------------------------------------------")
 
 	accs := ks.Accounts()
@@ -814,9 +819,6 @@ func SetP2PConfig(ctx *cli.Context, cfg *p2p.Config) {
 
 	if ctx.GlobalIsSet(MaxPeersFlag.Name) {
 		cfg.MaxPeers = ctx.GlobalInt(MaxPeersFlag.Name)
-		if lightServer && !ctx.GlobalIsSet(LightPeersFlag.Name) {
-			cfg.MaxPeers += lightPeers
-		}
 	} else {
 		if lightServer {
 			cfg.MaxPeers += lightPeers
@@ -1118,6 +1120,7 @@ func SetDashboardConfig(ctx *cli.Context, cfg *dashboard.Config) {
 	cfg.Host = ctx.GlobalString(DashboardAddrFlag.Name)
 	cfg.Port = ctx.GlobalInt(DashboardPortFlag.Name)
 	cfg.Refresh = ctx.GlobalDuration(DashboardRefreshFlag.Name)
+	cfg.Assets = ctx.GlobalString(DashboardAssetsFlag.Name)
 }
 
 // RegisterEthService adds an Ethereum client to the stack.
@@ -1276,11 +1279,11 @@ func MakeConsolePreloads(ctx *cli.Context) []string {
 // This is a temporary function used for migrating old command/flags to the
 // new format.
 //
-// e.g. geth account new --keystore /tmp/mykeystore --lightkdf
+// e.g. glyff account new --keystore /tmp/mykeystore --lightkdf
 //
 // is equivalent after calling this method with:
 //
-// geth --keystore /tmp/mykeystore --lightkdf account new
+// glyff --keystore /tmp/mykeystore --lightkdf account new
 //
 // This allows the use of the existing configuration functionality.
 // When all flags are migrated this function can be removed and the existing

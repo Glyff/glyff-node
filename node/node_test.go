@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/rpc"
 )
 
 var (

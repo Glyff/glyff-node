@@ -23,9 +23,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
 )
 
 // Runs multiple tests with randomized parameters.

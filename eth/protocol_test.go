@@ -22,12 +22,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/eth/downloader"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 func init() {

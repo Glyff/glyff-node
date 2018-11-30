@@ -25,21 +25,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/accounts/keystore"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/hexutil"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/consensus/ethash"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/rpc"
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
 )
@@ -1337,10 +1337,10 @@ func (s *PublicTransactionPoolAPI) Resend(ctx context.Context, sendArgs SendTxAr
 
 		if pFrom, err := types.Sender(signer, p); err == nil && pFrom == sendArgs.From && signer.Hash(p) == wantSigHash {
 			// Match. Re-sign and send the transaction.
-			if gasPrice != nil && (*big.Int)(gasPrice).Sign() != 0 {
+			if gasPrice != nil {
 				sendArgs.GasPrice = gasPrice
 			}
-			if gasLimit != nil && *gasLimit != 0 {
+			if gasLimit != nil {
 				sendArgs.Gas = gasLimit
 			}
 			signedTx, err := s.sign(sendArgs.From, sendArgs.toTransaction())

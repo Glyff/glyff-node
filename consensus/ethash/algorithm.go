@@ -27,11 +27,11 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/bitutil"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/sha3"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/bitutil"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/crypto/sha3"
+	"github.com/glyff/glyff-node/log"
 )
 
 const (

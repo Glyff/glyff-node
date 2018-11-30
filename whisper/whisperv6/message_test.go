@@ -23,9 +23,9 @@ import (
 	mrand "math/rand"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common/hexutil"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 func generateMessageParams() (*MessageParams, error) {

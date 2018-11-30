@@ -17,9 +17,9 @@
 package runtime
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/core/vm"
 )
 
 func NewEnv(cfg *Config) *vm.EVM {

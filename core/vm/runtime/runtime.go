@@ -21,12 +21,12 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/vm"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/vm"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/params"
 )
 
 // Config is a basic type specifying certain configuration flags for running
@@ -41,6 +41,7 @@ type Config struct {
 	GasLimit    uint64
 	GasPrice    *big.Int
 	Value       *big.Int
+	DisableJit  bool // "disable" so it's enabled by default
 	Debug       bool
 	EVMConfig   vm.Config
 
@@ -54,8 +55,6 @@ func setDefaults(cfg *Config) {
 		cfg.ChainConfig = &params.ChainConfig{
 			ChainId:        big.NewInt(1),
 			HomesteadBlock: new(big.Int),
-			DAOForkBlock:   new(big.Int),
-			DAOForkSupport: false,
 			EIP150Block:    new(big.Int),
 			EIP155Block:    new(big.Int),
 			EIP158Block:    new(big.Int),
@@ -91,7 +90,8 @@ func setDefaults(cfg *Config) {
 // It returns the EVM's return value, the new state and an error if it failed.
 //
 // Executes sets up a in memory, temporarily, environment for the execution of
-// the given code. It makes sure that it's restored to it's original state afterwards.
+// the given code. It enabled the JIT by default and make sure that it's restored
+// to it's original state afterwards.
 func Execute(code, input []byte, cfg *Config) ([]byte, *state.StateDB, error) {
 	if cfg == nil {
 		cfg = new(Config)

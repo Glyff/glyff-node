@@ -24,7 +24,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/glyff/glyff-node/core/types"
 )
 
 // Tests that ethash works correctly in test mode.

@@ -25,14 +25,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/mclock"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/p2p/discv5"
-	"github.com/ethereum/go-ethereum/p2p/nat"
-	"github.com/ethereum/go-ethereum/p2p/netutil"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/mclock"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/p2p/discv5"
+	"github.com/glyff/glyff-node/p2p/nat"
+	"github.com/glyff/glyff-node/p2p/netutil"
 )
 
 const (

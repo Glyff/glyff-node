@@ -23,16 +23,16 @@ import (
 	"math"
 	"math/big"
 	mrand "math/rand"
-	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/consensus"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/params"
 	"github.com/hashicorp/golang-lru"
+	"sync/atomic"
 )
 
 const (

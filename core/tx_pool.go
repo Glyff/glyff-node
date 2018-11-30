@@ -25,13 +25,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/params"
 	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
 )
 
@@ -877,14 +877,15 @@ func (pool *TxPool) removeTx(hash common.Hash) {
 	// Remove the transaction from the pending lists and reset the account nonce
 	if pending := pool.pending[addr]; pending != nil {
 		if removed, invalids := pending.Remove(tx); removed {
-			// If no more pending transactions are left, remove the list
+			// If no more transactions are left, remove the list
 			if pending.Empty() {
 				delete(pool.pending, addr)
 				delete(pool.beats, addr)
-			}
-			// Postpone any invalidated transactions
-			for _, tx := range invalids {
-				pool.enqueueTx(tx.Hash(), tx)
+			} else {
+				// Otherwise postpone any invalidated transactions
+				for _, tx := range invalids {
+					pool.enqueueTx(tx.Hash(), tx)
+				}
 			}
 			// Update the account nonce if needed
 			if nonce := tx.Nonce(); pool.pendingState.GetNonce(addr) > nonce {

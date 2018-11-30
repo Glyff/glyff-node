@@ -28,22 +28,22 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/accounts/keystore"
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/internal/debug"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/swarm"
-	bzzapi "github.com/ethereum/go-ethereum/swarm/api"
-	swarmmetrics "github.com/ethereum/go-ethereum/swarm/metrics"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/accounts/keystore"
+	"github.com/glyff/glyff-node/cmd/utils"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/console"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/ethclient"
+	"github.com/glyff/glyff-node/internal/debug"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/node"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/swarm"
+	bzzapi "github.com/glyff/glyff-node/swarm/api"
+	swarmmetrics "github.com/glyff/glyff-node/swarm/metrics"
 
 	"gopkg.in/urfave/cli.v1"
 )
@@ -161,7 +161,7 @@ var (
 
 var defaultNodeConfig = node.DefaultConfig
 
-// This init function sets defaults so cmd/swarm can run alongside geth.
+// This init function sets defaults so cmd/swarm can run alongside glyff.
 func init() {
 	defaultNodeConfig.Name = clientIdentifier
 	defaultNodeConfig.Version = params.VersionWithCommit(gitCommit)
@@ -405,9 +405,9 @@ func bzzd(ctx *cli.Context) error {
 	}
 
 	cfg := defaultNodeConfig
-	//geth only supports --datadir via command line
+	//glyff only supports --datadir via command line
 	//in order to be consistent within swarm, if we pass --datadir via environment variable
-	//or via config file, we get the same directory for geth and swarm
+	//or via config file, we get the same directory for glyff and swarm
 	if _, err := os.Stat(bzzconfig.Path); err == nil {
 		cfg.DataDir = bzzconfig.Path
 	}

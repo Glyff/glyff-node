@@ -36,11 +36,11 @@ import (
 	"time"
 
 	"github.com/docker/docker/pkg/reexec"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/node"
-	"github.com/ethereum/go-ethereum/p2p"
-	"github.com/ethereum/go-ethereum/p2p/discover"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/node"
+	"github.com/glyff/glyff-node/p2p"
+	"github.com/glyff/glyff-node/p2p/discover"
+	"github.com/glyff/glyff-node/rpc"
 	"golang.org/x/net/websocket"
 )
 

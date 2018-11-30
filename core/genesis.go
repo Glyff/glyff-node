@@ -25,15 +25,15 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/state"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/ethdb"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/params"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/hexutil"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core/state"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/ethdb"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/params"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 //go:generate gencodec -type Genesis -field-override genesisSpecMarshaling -out gen_genesis.go
@@ -312,10 +312,10 @@ func GenesisBlockForTesting(db ethdb.Database, addr common.Address, balance *big
 func DefaultGenesisBlock() *Genesis {
 	return &Genesis{
 		Config:     params.MainnetChainConfig,
-		Nonce:      66,
-		ExtraData:  hexutil.MustDecode("0x11bbe8db4e347b4e8c937c1c8370e4b5ed33adb3db69cbdb7a38e1e50b1b82fa"),
-		GasLimit:   5000,
-		Difficulty: big.NewInt(17179869184),
+		Nonce:      0,
+		ExtraData:  hexutil.MustDecode("0x0000000000000000000000000000000000000000000000000000000000000000"),
+		GasLimit:   60000000,
+		Difficulty: big.NewInt(8192),
 		Alloc:      decodePrealloc(mainnetAllocData),
 	}
 }
@@ -344,7 +344,7 @@ func DefaultRinkebyGenesisBlock() *Genesis {
 	}
 }
 
-// DeveloperGenesisBlock returns the 'geth --dev' genesis block. Note, this must
+// DeveloperGenesisBlock returns the 'glyff --dev' genesis block. Note, this must
 // be seeded with the
 func DeveloperGenesisBlock(period uint64, faucet common.Address) *Genesis {
 	// Override the default period to the user requested one
@@ -353,19 +353,23 @@ func DeveloperGenesisBlock(period uint64, faucet common.Address) *Genesis {
 
 	// Assemble and return the genesis with the precompiles and faucet pre-funded
 	return &Genesis{
-		Config:     &config,
+		Config:     params.MainnetChainConfig,
 		ExtraData:  append(append(make([]byte, 32), faucet[:]...), make([]byte, 65)...),
-		GasLimit:   6283185,
+		GasLimit:   60000000,
 		Difficulty: big.NewInt(1),
 		Alloc: map[common.Address]GenesisAccount{
-			common.BytesToAddress([]byte{1}): {Balance: big.NewInt(1)}, // ECRecover
-			common.BytesToAddress([]byte{2}): {Balance: big.NewInt(1)}, // SHA256
-			common.BytesToAddress([]byte{3}): {Balance: big.NewInt(1)}, // RIPEMD
-			common.BytesToAddress([]byte{4}): {Balance: big.NewInt(1)}, // Identity
-			common.BytesToAddress([]byte{5}): {Balance: big.NewInt(1)}, // ModExp
-			common.BytesToAddress([]byte{6}): {Balance: big.NewInt(1)}, // ECAdd
-			common.BytesToAddress([]byte{7}): {Balance: big.NewInt(1)}, // ECScalarMul
-			common.BytesToAddress([]byte{8}): {Balance: big.NewInt(1)}, // ECPairing
+			common.BytesToAddress([]byte{1}):          {Balance: big.NewInt(1)}, // ECRecover
+			common.BytesToAddress([]byte{2}):          {Balance: big.NewInt(1)}, // SHA256
+			common.BytesToAddress([]byte{3}):          {Balance: big.NewInt(1)}, // RIPEMD
+			common.BytesToAddress([]byte{4}):          {Balance: big.NewInt(1)}, // Identity
+			common.BytesToAddress([]byte{5}):          {Balance: big.NewInt(1)}, // ModExp
+			common.BytesToAddress([]byte{6}):          {Balance: big.NewInt(1)}, // ECAdd
+			common.BytesToAddress([]byte{7}):          {Balance: big.NewInt(1)}, // ECScalarMul
+			common.BytesToAddress([]byte{8}):          {Balance: big.NewInt(1)}, // ECPairing
+			common.BytesToAddress([]byte{0x88, 0x01}): {Balance: big.NewInt(1)}, // sha256Compress{},
+			common.BytesToAddress([]byte{0x88, 0x02}): {Balance: big.NewInt(1)}, // verifyShieldedTransfer{},
+			common.BytesToAddress([]byte{0x88, 0x03}): {Balance: big.NewInt(1)}, // verifyShielding{},
+			common.BytesToAddress([]byte{0x88, 0x04}): {Balance: big.NewInt(1)}, // verifyUnshielding{},
 			faucet: {Balance: new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(9))},
 		},
 	}
@@ -376,9 +380,11 @@ func decodePrealloc(data string) GenesisAlloc {
 	if err := rlp.NewStream(strings.NewReader(data), 0).Decode(&p); err != nil {
 		panic(err)
 	}
+
 	ga := make(GenesisAlloc, len(p))
+
 	for _, account := range p {
-		ga[common.BigToAddress(account.Addr)] = GenesisAccount{Balance: account.Balance}
+		ga[common.BigToAddress(account.Addr)] = GenesisAccount{Balance: account.Balance, Code: []byte("0x00")}
 	}
 	return ga
 }

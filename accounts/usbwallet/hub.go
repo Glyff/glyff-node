@@ -22,9 +22,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/event"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/event"
+	"github.com/glyff/glyff-node/log"
 	"github.com/karalabe/hid"
 )
 

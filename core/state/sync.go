@@ -19,9 +19,9 @@ package state
 import (
 	"bytes"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/trie"
 )
 
 // NewStateSync create a new state trie download scheduler.

@@ -29,9 +29,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/glyff/glyff-node/accounts"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/crypto"
 	"github.com/pborman/uuid"
 )
 

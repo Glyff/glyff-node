@@ -22,9 +22,9 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/vm"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core/vm"
 )
 
 type JSONLogger struct {

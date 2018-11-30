@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/log"
 )
 
 /*
@@ -29,8 +29,8 @@ see https://github.com/ethereum/go-ethereum/issues/2040
 Usage:
 
 import (
- "github.com/ethereum/go-ethereum/common/httpclient"
- "github.com/ethereum/go-ethereum/swarm/api/http"
+ "github.com/glyff/glyff-node/common/httpclient"
+ "github.com/glyff/glyff-node/swarm/api/http"
 )
 client := httpclient.New()
 // for (private) swarm proxy running locally

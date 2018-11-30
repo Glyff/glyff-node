@@ -24,12 +24,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind/backends"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/contracts/chequebook/contract"
-	"github.com/ethereum/go-ethereum/core"
-	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/glyff/glyff-node/accounts/abi/bind"
+	"github.com/glyff/glyff-node/accounts/abi/bind/backends"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/contracts/chequebook/contract"
+	"github.com/glyff/glyff-node/core"
+	"github.com/glyff/glyff-node/crypto"
 )
 
 var (

@@ -3,12 +3,12 @@
 default: build
 
 build:
-	go build -o bin/swarm    github.com/ethereum/go-ethereum/cmd/swarm
-	go build -o bin/geth     github.com/ethereum/go-ethereum/cmd/geth
-	go build -o bin/bootnode github.com/ethereum/go-ethereum/cmd/bootnode
+	go build -o bin/swarm    github.com/glyff/glyff-node/cmd/swarm
+	go build -o bin/glyff     github.com/glyff/glyff-node/cmd/glyff
+	go build -o bin/bootnode github.com/glyff/glyff-node/cmd/bootnode
 
 cluster: build
 	scripts/boot-cluster.sh
 
 test:
-	go test -v github.com/ethereum/go-ethereum/swarm/...
+	go test -v github.com/glyff/glyff-node/swarm/...

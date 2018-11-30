@@ -21,8 +21,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/rpc"
 )
 
 func TestUnmarshalJSONNewFilterArgs(t *testing.T) {

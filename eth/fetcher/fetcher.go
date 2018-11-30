@@ -22,10 +22,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/consensus"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/consensus"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/log"
 	"gopkg.in/karalabe/cookiejar.v2/collections/prque"
 )
 
@@ -633,7 +633,7 @@ func (f *Fetcher) enqueue(peer string, block *types.Block) {
 }
 
 // insert spawns a new goroutine to run a block insertion into the chain. If the
-// block's number is at the same height as the current import phase, it updates
+// block's number is at the same height as the current import phase, if updates
 // the phase states accordingly.
 func (f *Fetcher) insert(peer string, block *types.Block) {
 	hash := block.Hash()

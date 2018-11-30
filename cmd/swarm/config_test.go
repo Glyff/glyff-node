@@ -25,9 +25,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/rpc"
-	"github.com/ethereum/go-ethereum/swarm"
-	"github.com/ethereum/go-ethereum/swarm/api"
+	"github.com/glyff/glyff-node/rpc"
+	"github.com/glyff/glyff-node/swarm"
+	"github.com/glyff/glyff-node/swarm/api"
 
 	"github.com/docker/docker/pkg/reexec"
 )
@@ -465,7 +465,7 @@ func TestValidateConfig(t *testing.T) {
 	}{
 		{
 			cfg: &api.Config{EnsAPIs: []string{
-				"/data/testnet/geth.ipc",
+				"/data/testnet/glyff.ipc",
 			}},
 		},
 		{
@@ -480,7 +480,7 @@ func TestValidateConfig(t *testing.T) {
 		},
 		{
 			cfg: &api.Config{EnsAPIs: []string{
-				"test:/data/testnet/geth.ipc",
+				"test:/data/testnet/glyff.ipc",
 			}},
 		},
 		{
@@ -490,7 +490,7 @@ func TestValidateConfig(t *testing.T) {
 		},
 		{
 			cfg: &api.Config{EnsAPIs: []string{
-				"314159265dD8dbb310642f98f50C066173C1259b@/data/testnet/geth.ipc",
+				"314159265dD8dbb310642f98f50C066173C1259b@/data/testnet/glyff.ipc",
 			}},
 		},
 		{
@@ -505,7 +505,7 @@ func TestValidateConfig(t *testing.T) {
 		},
 		{
 			cfg: &api.Config{EnsAPIs: []string{
-				"test:314159265dD8dbb310642f98f50C066173C1259b@/data/testnet/geth.ipc",
+				"test:314159265dD8dbb310642f98f50C066173C1259b@/data/testnet/glyff.ipc",
 			}},
 		},
 		{
@@ -538,9 +538,9 @@ func TestValidateConfig(t *testing.T) {
 		},
 		{
 			cfg: &api.Config{EnsAPIs: []string{
-				"@/data/testnet/geth.ipc",
+				"@/data/testnet/glyff.ipc",
 			}},
-			err: "invalid format [tld:][contract-addr@]url for ENS API endpoint configuration \"@/data/testnet/geth.ipc\": missing contract address",
+			err: "invalid format [tld:][contract-addr@]url for ENS API endpoint configuration \"@/data/testnet/glyff.ipc\": missing contract address",
 		},
 	} {
 		err := validateConfig(c.cfg)

@@ -26,11 +26,11 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/ecies"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/crypto/ecies"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 // Envelope represents a clear-text data packet to transmit through the Whisper
@@ -268,12 +268,4 @@ func TopicToBloom(topic TopicType) []byte {
 		b[byteIndex] = (1 << uint(bitIndex))
 	}
 	return b
-}
-
-// GetEnvelope retrieves an envelope from the message queue by its hash.
-// It returns nil if the envelope can not be found.
-func (w *Whisper) GetEnvelope(hash common.Hash) *Envelope {
-	w.poolMu.RLock()
-	defer w.poolMu.RUnlock()
-	return w.envelopes[hash]
 }

@@ -23,9 +23,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/params"
 )
 
 type diffTest struct {

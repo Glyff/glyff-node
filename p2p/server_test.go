@@ -25,10 +25,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/sha3"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/crypto/sha3"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/p2p/discover"
 )
 
 func init() {

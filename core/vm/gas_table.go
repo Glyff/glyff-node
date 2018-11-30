@@ -17,9 +17,9 @@
 package vm
 
 import (
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/common/math"
-	"github.com/ethereum/go-ethereum/params"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/common/math"
+	"github.com/glyff/glyff-node/params"
 )
 
 // memoryGasCosts calculates the quadratic gas for memory expansion. It does so

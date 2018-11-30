@@ -41,10 +41,10 @@ const styles = {
 // themeStyles returns the styles generated from the theme for the component.
 const themeStyles = theme => ({
 	list: {
-		background: theme.palette.grey[900],
+		background: theme.palette.background.appBar,
 	},
 	listItem: {
-		minWidth: theme.spacing.unit * 7,
+		minWidth: theme.spacing.unit * 3,
 	},
 	icon: {
 		fontSize: theme.spacing.unit * 3,

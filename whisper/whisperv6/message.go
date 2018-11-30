@@ -28,10 +28,10 @@ import (
 	mrand "math/rand"
 	"strconv"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/crypto/ecies"
-	"github.com/ethereum/go-ethereum/log"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/crypto/ecies"
+	"github.com/glyff/glyff-node/log"
 )
 
 // MessageParams specifies the exact way a message should be wrapped
@@ -289,7 +289,7 @@ func (msg *ReceivedMessage) decryptSymmetric(key []byte) error {
 
 // decryptAsymmetric decrypts an encrypted payload with a private key.
 func (msg *ReceivedMessage) decryptAsymmetric(key *ecdsa.PrivateKey) error {
-	decrypted, err := ecies.ImportECDSA(key).Decrypt(msg.Raw, nil, nil)
+	decrypted, err := ecies.ImportECDSA(key).Decrypt(crand.Reader, msg.Raw, nil, nil)
 	if err == nil {
 		msg.Raw = decrypted
 	}

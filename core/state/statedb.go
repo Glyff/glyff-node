@@ -23,12 +23,12 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/rlp"
-	"github.com/ethereum/go-ethereum/trie"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/rlp"
+	"github.com/glyff/glyff-node/trie"
 )
 
 type revision struct {
@@ -83,7 +83,7 @@ type StateDB struct {
 	lock sync.Mutex
 }
 
-// Create a new state from a given trie.
+// Create a new state from a given trie
 func New(root common.Hash, db Database) (*StateDB, error) {
 	tr, err := db.OpenTrie(root)
 	if err != nil {
@@ -110,7 +110,7 @@ func (self *StateDB) Error() error {
 	return self.dbErr
 }
 
-// Reset clears out all ephemeral state objects from the state db, but keeps
+// Reset clears out all emphemeral state objects from the state db, but keeps
 // the underlying state trie to avoid reloading data for the next operations.
 func (self *StateDB) Reset(root common.Hash) error {
 	tr, err := self.db.OpenTrie(root)

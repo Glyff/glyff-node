@@ -58,23 +58,23 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/internal/build"
+	"github.com/glyff/glyff-node/internal/build"
 )
 
 var (
-	// Files that end up in the geth*.zip archive.
-	gethArchiveFiles = []string{
+	// Files that end up in the glyff*.zip archive.
+	glyffArchiveFiles = []string{
 		"COPYING",
-		executablePath("geth"),
+		executablePath("glyff"),
 	}
 
-	// Files that end up in the geth-alltools*.zip archive.
+	// Files that end up in the glyff-alltools*.zip archive.
 	allToolsArchiveFiles = []string{
 		"COPYING",
 		executablePath("abigen"),
 		executablePath("bootnode"),
 		executablePath("evm"),
-		executablePath("geth"),
+		executablePath("glyff"),
 		executablePath("puppeth"),
 		executablePath("rlpdump"),
 		executablePath("swarm"),
@@ -96,7 +96,7 @@ var (
 			Description: "Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode.",
 		},
 		{
-			Name:        "geth",
+			Name:        "glyff",
 			Description: "Ethereum CLI client.",
 		},
 		{
@@ -182,13 +182,13 @@ func doInstall(cmdline []string) {
 	// Check Go version. People regularly open issues about compilation
 	// failure with outdated Go. This should save them the trouble.
 	if !strings.Contains(runtime.Version(), "devel") {
-		// Figure out the minor version number since we can't textually compare (1.10 < 1.9)
+		// Figure out the minor version number since we can't textually compare (1.10 < 1.8)
 		var minor int
 		fmt.Sscanf(strings.TrimPrefix(runtime.Version(), "go1."), "%d", &minor)
 
-		if minor < 9 {
+		if minor < 8 {
 			log.Println("You have Go version", runtime.Version())
-			log.Println("go-ethereum requires at least Go version 1.9 and cannot")
+			log.Println("go-ethereum requires at least Go version 1.8 and cannot")
 			log.Println("be compiled with an earlier version. Please upgrade your Go installation.")
 			os.Exit(1)
 		}
@@ -262,6 +262,16 @@ func goTool(subcmd string, args ...string) *exec.Cmd {
 
 func goToolArch(arch string, cc string, subcmd string, args ...string) *exec.Cmd {
 	cmd := build.GoTool(subcmd, args...)
+	if subcmd == "build" || subcmd == "install" || subcmd == "test" {
+		// Go CGO has a Windows linker error prior to 1.8 (https://github.com/golang/go/issues/8756).
+		// Work around issue by allowing multiple definitions for <1.8 builds.
+		var minor int
+		fmt.Sscanf(strings.TrimPrefix(runtime.Version(), "go1."), "%d", &minor)
+
+		if runtime.GOOS == "windows" && minor < 8 {
+			cmd.Args = append(cmd.Args, []string{"-ldflags", "-extldflags -Wl,--allow-multiple-definition"}...)
+		}
+	}
 	cmd.Env = []string{"GOPATH=" + build.GOPATH()}
 	if arch == "" || arch == runtime.GOARCH {
 		cmd.Env = append(cmd.Env, "GOBIN="+GOBIN)
@@ -352,7 +362,7 @@ func doArchive(cmdline []string) {
 		arch   = flag.String("arch", runtime.GOARCH, "Architecture cross packaging")
 		atype  = flag.String("type", "zip", "Type of archive to write (zip|tar)")
 		signer = flag.String("signer", "", `Environment variable holding the signing key (e.g. LINUX_SIGNING_KEY)`)
-		upload = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload = flag.String("upload", "", `Destination to upload the archives (usually "glyffstore/builds")`)
 		ext    string
 	)
 	flag.CommandLine.Parse(cmdline)
@@ -368,17 +378,17 @@ func doArchive(cmdline []string) {
 	var (
 		env      = build.Env()
 		base     = archiveBasename(*arch, env)
-		geth     = "geth-" + base + ext
-		alltools = "geth-alltools-" + base + ext
+		glyff    = "glyff-" + base + ext
+		alltools = "glyff-alltools-" + base + ext
 	)
 	maybeSkipArchive(env)
-	if err := build.WriteArchive(geth, gethArchiveFiles); err != nil {
+	if err := build.WriteArchive(glyff, glyffArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
 	if err := build.WriteArchive(alltools, allToolsArchiveFiles); err != nil {
 		log.Fatal(err)
 	}
-	for _, archive := range []string{geth, alltools} {
+	for _, archive := range []string{glyff, alltools} {
 		if err := archiveUpload(archive, *upload, *signer); err != nil {
 			log.Fatal(err)
 		}
@@ -505,7 +515,7 @@ func makeWorkdir(wdflag string) string {
 	if wdflag != "" {
 		err = os.MkdirAll(wdflag, 0744)
 	} else {
-		wdflag, err = ioutil.TempDir("", "geth-build-")
+		wdflag, err = ioutil.TempDir("", "glyff-build-")
 	}
 	if err != nil {
 		log.Fatal(err)
@@ -642,7 +652,7 @@ func doWindowsInstaller(cmdline []string) {
 	var (
 		arch    = flag.String("arch", runtime.GOARCH, "Architecture for cross build packaging")
 		signer  = flag.String("signer", "", `Environment variable holding the signing key (e.g. WINDOWS_SIGNING_KEY)`)
-		upload  = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload  = flag.String("upload", "", `Destination to upload the archives (usually "glyffstore/builds")`)
 		workdir = flag.String("workdir", "", `Output directory for packages (uses temp dir if unset)`)
 	)
 	flag.CommandLine.Parse(cmdline)
@@ -652,30 +662,30 @@ func doWindowsInstaller(cmdline []string) {
 
 	// Aggregate binaries that are included in the installer
 	var (
-		devTools []string
-		allTools []string
-		gethTool string
+		devTools  []string
+		allTools  []string
+		glyffTool string
 	)
 	for _, file := range allToolsArchiveFiles {
 		if file == "COPYING" { // license, copied later
 			continue
 		}
 		allTools = append(allTools, filepath.Base(file))
-		if filepath.Base(file) == "geth.exe" {
-			gethTool = file
+		if filepath.Base(file) == "glyff.exe" {
+			glyffTool = file
 		} else {
 			devTools = append(devTools, file)
 		}
 	}
 
 	// Render NSIS scripts: Installer NSIS contains two installer sections,
-	// first section contains the geth binary, second section holds the dev tools.
+	// first section contains the glyff binary, second section holds the dev tools.
 	templateData := map[string]interface{}{
 		"License":  "COPYING",
-		"Geth":     gethTool,
+		"Glyff":    glyffTool,
 		"DevTools": devTools,
 	}
-	build.Render("build/nsis.geth.nsi", filepath.Join(*workdir, "geth.nsi"), 0644, nil)
+	build.Render("build/nsis.glyff.nsi", filepath.Join(*workdir, "glyff.nsi"), 0644, nil)
 	build.Render("build/nsis.install.nsh", filepath.Join(*workdir, "install.nsh"), 0644, templateData)
 	build.Render("build/nsis.uninstall.nsh", filepath.Join(*workdir, "uninstall.nsh"), 0644, allTools)
 	build.Render("build/nsis.pathupdate.nsh", filepath.Join(*workdir, "PathUpdate.nsh"), 0644, nil)
@@ -690,14 +700,14 @@ func doWindowsInstaller(cmdline []string) {
 	if env.Commit != "" {
 		version[2] += "-" + env.Commit[:8]
 	}
-	installer, _ := filepath.Abs("geth-" + archiveBasename(*arch, env) + ".exe")
+	installer, _ := filepath.Abs("glyff-" + archiveBasename(*arch, env) + ".exe")
 	build.MustRunCommand("makensis.exe",
 		"/DOUTPUTFILE="+installer,
 		"/DMAJORVERSION="+version[0],
 		"/DMINORVERSION="+version[1],
 		"/DBUILDVERSION="+version[2],
 		"/DARCH="+*arch,
-		filepath.Join(*workdir, "geth.nsi"),
+		filepath.Join(*workdir, "glyff.nsi"),
 	)
 
 	// Sign and publish installer.
@@ -713,7 +723,7 @@ func doAndroidArchive(cmdline []string) {
 		local  = flag.Bool("local", false, `Flag whether we're only doing a local build (skip Maven artifacts)`)
 		signer = flag.String("signer", "", `Environment variable holding the signing key (e.g. ANDROID_SIGNING_KEY)`)
 		deploy = flag.String("deploy", "", `Destination to deploy the archive (usually "https://oss.sonatype.org")`)
-		upload = flag.String("upload", "", `Destination to upload the archive (usually "gethstore/builds")`)
+		upload = flag.String("upload", "", `Destination to upload the archive (usually "glyffstore/builds")`)
 	)
 	flag.CommandLine.Parse(cmdline)
 	env := build.Env()
@@ -726,13 +736,13 @@ func doAndroidArchive(cmdline []string) {
 		log.Fatal("Please ensure ANDROID_NDK points to your Android NDK")
 	}
 	// Build the Android archive and Maven resources
-	build.MustRun(goTool("get", "golang.org/x/mobile/cmd/gomobile", "golang.org/x/mobile/cmd/gobind"))
+	build.MustRun(goTool("get", "golang.org/x/mobile/cmd/gomobile"))
 	build.MustRun(gomobileTool("init", "--ndk", os.Getenv("ANDROID_NDK")))
-	build.MustRun(gomobileTool("bind", "--target", "android", "--javapkg", "org.ethereum", "-v", "github.com/ethereum/go-ethereum/mobile"))
+	build.MustRun(gomobileTool("bind", "--target", "android", "--javapkg", "org.ethereum", "-v", "github.com/glyff/glyff-node/mobile"))
 
 	if *local {
 		// If we're building locally, copy bundle to build dir and skip Maven
-		os.Rename("geth.aar", filepath.Join(GOBIN, "geth.aar"))
+		os.Rename("glyff.aar", filepath.Join(GOBIN, "glyff.aar"))
 		return
 	}
 	meta := newMavenMetadata(env)
@@ -742,8 +752,8 @@ func doAndroidArchive(cmdline []string) {
 	maybeSkipArchive(env)
 
 	// Sign and upload the archive to Azure
-	archive := "geth-" + archiveBasename("android", env) + ".aar"
-	os.Rename("geth.aar", archive)
+	archive := "glyff-" + archiveBasename("android", env) + ".aar"
+	os.Rename("glyff.aar", archive)
 
 	if err := archiveUpload(archive, *upload, *signer); err != nil {
 		log.Fatal(err)
@@ -777,10 +787,9 @@ func gomobileTool(subcmd string, args ...string) *exec.Cmd {
 	cmd.Args = append(cmd.Args, args...)
 	cmd.Env = []string{
 		"GOPATH=" + build.GOPATH(),
-		"PATH=" + GOBIN + string(os.PathListSeparator) + os.Getenv("PATH"),
 	}
 	for _, e := range os.Environ() {
-		if strings.HasPrefix(e, "GOPATH=") || strings.HasPrefix(e, "PATH=") {
+		if strings.HasPrefix(e, "GOPATH=") {
 			continue
 		}
 		cmd.Env = append(cmd.Env, e)
@@ -828,7 +837,7 @@ func newMavenMetadata(env build.Environment) mavenMetadata {
 	}
 	return mavenMetadata{
 		Version:      version,
-		Package:      "geth-" + version,
+		Package:      "glyff-" + version,
 		Develop:      isUnstableBuild(env),
 		Contributors: contribs,
 	}
@@ -841,15 +850,15 @@ func doXCodeFramework(cmdline []string) {
 		local  = flag.Bool("local", false, `Flag whether we're only doing a local build (skip Maven artifacts)`)
 		signer = flag.String("signer", "", `Environment variable holding the signing key (e.g. IOS_SIGNING_KEY)`)
 		deploy = flag.String("deploy", "", `Destination to deploy the archive (usually "trunk")`)
-		upload = flag.String("upload", "", `Destination to upload the archives (usually "gethstore/builds")`)
+		upload = flag.String("upload", "", `Destination to upload the archives (usually "glyffstore/builds")`)
 	)
 	flag.CommandLine.Parse(cmdline)
 	env := build.Env()
 
 	// Build the iOS XCode framework
-	build.MustRun(goTool("get", "golang.org/x/mobile/cmd/gomobile", "golang.org/x/mobile/cmd/gobind"))
+	build.MustRun(goTool("get", "golang.org/x/mobile/cmd/gomobile"))
 	build.MustRun(gomobileTool("init"))
-	bind := gomobileTool("bind", "--target", "ios", "--tags", "ios", "-v", "github.com/ethereum/go-ethereum/mobile")
+	bind := gomobileTool("bind", "--target", "ios", "--tags", "ios", "-v", "github.com/glyff/glyff-node/mobile")
 
 	if *local {
 		// If we're building locally, use the build folder and stop afterwards
@@ -857,7 +866,7 @@ func doXCodeFramework(cmdline []string) {
 		build.MustRun(bind)
 		return
 	}
-	archive := "geth-" + archiveBasename("ios", env)
+	archive := "glyff-" + archiveBasename("ios", env)
 	if err := os.Mkdir(archive, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
@@ -875,8 +884,8 @@ func doXCodeFramework(cmdline []string) {
 	// Prepare and upload a PodSpec to CocoaPods
 	if *deploy != "" {
 		meta := newPodMetadata(env, archive)
-		build.Render("build/pod.podspec", "Geth.podspec", 0755, meta)
-		build.MustRunCommand("pod", *deploy, "push", "Geth.podspec", "--allow-warnings", "--verbose")
+		build.Render("build/pod.podspec", "Glyff.podspec", 0755, meta)
+		build.MustRunCommand("pod", *deploy, "push", "Glyff.podspec", "--allow-warnings", "--verbose")
 	}
 }
 
@@ -981,7 +990,7 @@ func xgoTool(args []string) *exec.Cmd {
 
 func doPurge(cmdline []string) {
 	var (
-		store = flag.String("store", "", `Destination from where to purge archives (usually "gethstore/builds")`)
+		store = flag.String("store", "", `Destination from where to purge archives (usually "glyffstore/builds")`)
 		limit = flag.Int("days", 30, `Age threshold above which to delete unstalbe archives`)
 	)
 	flag.CommandLine.Parse(cmdline)

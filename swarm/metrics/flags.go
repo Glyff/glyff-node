@@ -19,10 +19,10 @@ package metrics
 import (
 	"time"
 
-	"github.com/ethereum/go-ethereum/cmd/utils"
-	"github.com/ethereum/go-ethereum/log"
-	gethmetrics "github.com/ethereum/go-ethereum/metrics"
-	"github.com/ethereum/go-ethereum/metrics/influxdb"
+	"github.com/glyff/glyff-node/cmd/utils"
+	"github.com/glyff/glyff-node/log"
+	glyffmetrics "github.com/glyff/glyff-node/metrics"
+	"github.com/glyff/glyff-node/metrics/influxdb"
 	"gopkg.in/urfave/cli.v1"
 )
 
@@ -70,7 +70,7 @@ var Flags = []cli.Flag{
 }
 
 func Setup(ctx *cli.Context) {
-	if gethmetrics.Enabled {
+	if glyffmetrics.Enabled {
 		log.Info("Enabling swarm metrics collection")
 		var (
 			enableExport = ctx.GlobalBool(metricsEnableInfluxDBExportFlag.Name)
@@ -83,7 +83,7 @@ func Setup(ctx *cli.Context) {
 
 		if enableExport {
 			log.Info("Enabling swarm metrics export to InfluxDB")
-			go influxdb.InfluxDBWithTags(gethmetrics.DefaultRegistry, 10*time.Second, endpoint, database, username, password, "swarm.", map[string]string{
+			go influxdb.InfluxDBWithTags(glyffmetrics.DefaultRegistry, 10*time.Second, endpoint, database, username, password, "swarm.", map[string]string{
 				"host": hosttag,
 			})
 		}

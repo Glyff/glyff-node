@@ -21,11 +21,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/ethereum/go-ethereum/eth/downloader"
-	"github.com/ethereum/go-ethereum/log"
-	"github.com/ethereum/go-ethereum/p2p/discover"
+	"github.com/glyff/glyff-node/common"
+	"github.com/glyff/glyff-node/core/types"
+	"github.com/glyff/glyff-node/eth/downloader"
+	"github.com/glyff/glyff-node/log"
+	"github.com/glyff/glyff-node/p2p/discover"
 )
 
 const (
@@ -188,14 +188,6 @@ func (pm *ProtocolManager) synchronise(peer *peer) {
 		atomic.StoreUint32(&pm.fastSync, 1)
 		mode = downloader.FastSync
 	}
-
-	if mode == downloader.FastSync {
-		// Make sure the peer's total difficulty we are synchronizing is higher.
-		if pm.blockchain.GetTdByHash(pm.blockchain.CurrentFastBlock().Hash()).Cmp(pTd) >= 0 {
-			return
-		}
-	}
-
 	// Run the sync cycle, and disable fast sync if we've went past the pivot block
 	if err := pm.downloader.Synchronise(peer.id, pHead, pTd, mode); err != nil {
 		return

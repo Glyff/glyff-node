@@ -22,8 +22,8 @@ import (
 	"io"
 	"net"
 
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/rlp"
+	"github.com/glyff/glyff-node/crypto"
+	"github.com/glyff/glyff-node/rlp"
 )
 
 // Entry is implemented by known node record entry types.
