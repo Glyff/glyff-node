@@ -1,16 +1,26 @@
-# Build Glyff in a stock Go builder container
-FROM golang:1.9-alpine as builder
+FROM ubuntu:16.04
 
-RUN apk add --no-cache make gcc musl-dev linux-headers
+LABEL version="1.0"
+LABEL maintainer="cmoore@glyff.io"
+ENV PATH=/usr/lib/go-1.9/bin:$PATH
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install --yes software-properties-common
+RUN add-apt-repository ppa:ethereum/ethereum
+RUN add-apt-repository -s ppa:ethereum/ethereum
+RUN apt-get update && apt-get --yes build-dep geth
+RUN apt-get install --yes build-essential cmake git libgmp3-dev libprocps4-dev python-markdown libboost-all-dev libssl-dev golang-1.9 curl
 
 ADD . /glyff
-RUN cd /glyff && make glyff
 
-# Pull Glyff into a second stage deploy alpine container
-FROM alpine:latest
+WORKDIR /glyff
 
-RUN apk add --no-cache ca-certificates
-COPY --from=builder /glyff/build/bin/glyff /usr/local/bin/
+RUN make glyff
+
+RUN curl -LO https://github.com/Glyff/glyff-sprout-params/releases/download/v0.1.0/glyff-keys.tar
+
+RUN tar xf glyff-keys.tar ; rm glyff-keys.tar
 
 EXPOSE 8545 8546 30303 30303/udp 30304/udp
-ENTRYPOINT ["glyff"]
+
+ENTRYPOINT bash
