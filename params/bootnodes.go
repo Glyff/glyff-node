@@ -20,8 +20,8 @@ package params
 // the main Glyff network.
 var MainnetBootnodes = []string{
 	// Glyff Bootnodes
-	"enode://153490f6f0b7fe4506238d624055ebb84ef0dd2cac74ed15230ea269da7cd69a13a20ad86e1323a5e6b114a8a69d7647cba231dcd94c11bd1cce5d337f4091b7@185.141.24.37:30303", // NODE1
-	"enode://923afccdd4443fa2865aaf14df7a1fa1152e3cd73ca2cf6f706ca8ceb202477958ffd83ff69b63b72eb952f51befa42807e470e9403fa9b2edb3ca81cd22c180@185.141.24.38:30303", // NODE2
+	"enode://aa210fb8e640c59c6730f93bfcb1151593610c51957b8b848e6834f112d5185eb02d02b88e6dda661a9f49f90078e2b472e104bc2ff133f8831ba25816051852@212.8.250.110:30303", // NODE1
+	"enode://d5964e06b0240f5108f35dce05b7efb76ca0832a282f8666625ce8a0baa298a303bb121384fa6bd9e3ac7c45724a83cfce055e0e12f0c9a425596a928920d634@212.8.250.118:30303", // NODE2
 }
 
 // TestnetBootnodes are the enode URLs of the P2P bootstrap nodes running on the
