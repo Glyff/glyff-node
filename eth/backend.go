@@ -90,8 +90,9 @@ type Ethereum struct {
 	gasPrice  *big.Int
 	etherbase common.Address
 
-	networkId     uint64
-	netRPCService *ethapi.PublicNetAPI
+	networkId            uint64
+	netRPCService        *ethapi.PublicNetAPI
+	EnableNodePermission bool //Used for enabling / disabling node permissioning
 
 	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and etherbase)
 }

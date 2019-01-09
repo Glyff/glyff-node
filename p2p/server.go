@@ -139,6 +139,10 @@ type Config struct {
 	// whenever a message is sent to or received from a peer
 	EnableMsgEvents bool
 
+	EnableNodePermission bool `toml:",omitempty"`
+
+	DataDir string `toml:",omitempty"`
+
 	// Logger is a custom logger to use with the p2p.Server.
 	Logger log.Logger `toml:",omitempty"`
 }
@@ -821,6 +825,35 @@ func (srv *Server) setupConn(c *conn, flags connFlag, dialDest *discover.Node) e
 		return err
 	}
 	clog := srv.log.New("id", c.id, "addr", c.fd.RemoteAddr(), "conn", c.flags)
+
+	currentNode := srv.NodeInfo().ID
+	cnodeName := srv.NodeInfo().Name
+	clog.Trace("Quorum permissioning",
+		"EnableNodePermission", srv.EnableNodePermission,
+		"DataDir", srv.DataDir,
+		"Current Node ID", currentNode,
+		"Node Name", cnodeName,
+		"Dialed Dest", dialDest,
+		"Connection ID", c.id,
+		"Connection String", c.id.String())
+
+	if srv.EnableNodePermission {
+		clog.Trace("Node Permissioning is Enabled.")
+		node := c.id.String()
+		direction := "INCOMING"
+		if dialDest != nil {
+			node = dialDest.ID.String()
+			direction = "OUTGOING"
+			log.Trace("Node Permissioning", "Connection Direction", direction)
+		}
+
+		if !isNodePermissioned(node, currentNode, srv.DataDir, direction) {
+			return nil
+		}
+	} else {
+		clog.Trace("Node Permissioning is Disabled.")
+	}
+
 	// For dialed connections, check that the remote public key matches.
 	if dialDest != nil && c.id != dialDest.ID {
 		clog.Trace("Dialed identity mismatch", "want", c, dialDest.ID)
