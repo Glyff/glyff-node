@@ -5,7 +5,7 @@ Official golang implementation of the Ethereum-based Glyff protocol.
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/glyff/lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 
-## Building the source
+## Building from source
 
 For prerequisites and detailed build instructions please read the official
 Glyff-node [Installation
@@ -53,7 +53,7 @@ This command will:
    which is very CPU intensive.
  * Start up Glyff's built-in interactive [JavaScript console](https://github.com/Glyff/glyff-node/wiki/JavaScript-Console),
    (via the trailing `console` subcommand) through which you can invoke all official [`web3` methods](https://github.com/Glyff/wiki/wiki/Javascript-API)
-   as well as Glyff's own [management APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs).
+   as well as Glyff's own [management APIs](https://github.com/glyff/glyff-node/wiki/Management-APIs).
    This too is optional and if you leave it out you can always attach to an already running Glyff instance
    with `glyff attach`.
 
