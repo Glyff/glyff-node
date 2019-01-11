@@ -34,7 +34,7 @@ The glyff project executable is found in the `cmd` directory.
 
 ### Full node on the Glyff private testnet
 
-At this moment in time, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to our seed nodes. Request access to the private testnet [here](https://glyff.io.com/Glyff/glyff-node/wiki/Building-Glyff)
+At this moment in time, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to our seed nodes. Request access to the private testnet [here](https://glyff.io/status.html)
 
 To enable simple interaction withe Glyff network, such as : create accounts; transfer funds; deploy and interact with contracts. For this particular use-case
 the user doesn't care about years-old historical data, so we can fast-sync quickly to the current
