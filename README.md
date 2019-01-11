@@ -4,13 +4,12 @@ Official golang implementation of the Ethereum-based Glyff protocol.
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/glyff/lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Binary archives are published at https://github.com/glyff/glyff/releases
 
 ## Building the source
 
 For prerequisites and detailed build instructions please read the official
-Go-Ethereum [Installation
-Instructions](https://github.com/ethereum/go-ethereum/wiki/Building-Ethereum)
+Glyff-node [Installation
+Instructions](https://github.com/Glyff/glyff-node/wiki/Building-Glyff)
 on the wiki. Additionally, glyff depends on JPMorgan Chase's ZSL on Quorum,
 with its own set of [build
 requirements](https://github.com/jpmorganchase/zsl-q#building).
@@ -21,36 +20,23 @@ dependencies are installed, run
 
     make glyff
 
-or, to build the full suite of utilities:
-
-    make all
 
 ## Executables
 
-The glyff project comes with several wrappers/executables found in the `cmd` directory.
+The glyff project executable is found in the `cmd` directory.
 
 | Command    | Description |
 |:----------:|-------------|
-| **`glyff`** | Our main Glyff CLI client. It is the entry point into the Glyff network (main-, test- or private net), capable of running as a full node (default) archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the Glyff network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `glyff --help` and the [CLI Wiki page](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options) for command line options. |
-| `abigen` | Source code generator to convert Glyff contract definitions into easy to use, compile-time type-safe Go packages. It operates on plain [Glyff contract ABIs](https://github.com/ethereum/wiki/wiki/Ethereum-Contract-ABI) with expanded functionality if the contract bytecode is also available. However it also accepts Solidity source files, making development much more streamlined. Please see our [Native DApps](https://github.com/ethereum/go-ethereum/wiki/Native-DApps:-Go-bindings-to-Ethereum-contracts) wiki page for details. |
-| `bootnode` | Stripped down version of our Glyff client implementation that only takes part in the network node discovery protocol, but does not run any of the higher level application protocols. It can be used as a lightweight bootstrap node to aid in finding peers in private networks. |
-| `evm` | Developer utility version of the EVM (Ethereum Virtual Machine) that is capable of running bytecode snippets within a configurable environment and execution mode. Its purpose is to allow isolated, fine-grained debugging of EVM opcodes (e.g. `evm --code 60ff60ff --debug`). |
-| `glyffrpctest` | Developer utility tool to support our [glyff/rpc-test](https://github.com/ethereum/rpc-tests) test suite which validates baseline conformity to the [Glyff JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) specs. Please see the [test suite's readme](https://github.com/ethereum/rpc-tests/blob/master/README.md) for details. |
-| `rlpdump` | Developer utility tool to convert binary RLP ([Recursive Length Prefix](https://github.com/ethereum/wiki/wiki/RLP)) dumps (data encoding used by the Glyff protocol both network as well as consensus wise) to user friendlier hierarchical representation (e.g. `rlpdump --hex CE0183FFFFFFC4C304050583616263`). |
-| `swarm`    | swarm daemon and tools. This is the entrypoint for the swarm network. `swarm --help` for command line options and subcommands. See https://swarm-guide.readthedocs.io for swarm documentation. |
-| `puppeth`    | a CLI wizard that aids in creating a new Glyff network. |
+| **`glyff`** | Our main Glyff CLI client. It is the entry point into the Glyff network (main-, test- or private net), capable of running as a full node (default) archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the Glyff network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `glyff --help` for command line options. |
+
 
 ## Running glyff
 
-Going through all the possible command line flags is out of scope here (please consult our
-[CLI Wiki page](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)), but we've
-enumerated a few common parameter combos to get you up to speed quickly on how you can run your
-own Glyff instance.
+### Full node on the Glyff private testnet
 
-### Full node on the main Glyff network
+At this moment in time, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to our seed nodes. Request access to the private testnet [here](https://glyff.io.com/Glyff/glyff-node/wiki/Building-Glyff)
 
-By far the most common scenario is people wanting to simply interact with the Glyff network:
-create accounts; transfer funds; deploy and interact with contracts. For this particular use-case
+To enable simple interaction withe Glyff network, such as : create accounts; transfer funds; deploy and interact with contracts. For this particular use-case
 the user doesn't care about years-old historical data, so we can fast-sync quickly to the current
 state of the network. To do so:
 
@@ -69,34 +55,7 @@ This command will:
    This too is optional and if you leave it out you can always attach to an already running Glyff instance
    with `glyff attach`.
 
-### Full node on the Glyff test network
 
-Transitioning towards developers, if you'd like to play around with creating Glyff contracts, you
-almost certainly would like to do that without any real money involved until you get the hang of the
-entire system. In other words, instead of attaching to the main network, you want to join the **test**
-network with your node, which is fully equivalent to the main network, but with play-Ether only.
-
-```
-$ glyff --testnet console
-```
-
-The `console` subcommand have the exact same meaning as above and they are equally useful on the
-testnet too. Please see above for their explanations if you've skipped to here.
-
-Specifying the `--testnet` flag however will reconfigure your Glyff instance a bit:
-
- * Instead of using the default data directory (`~/.glyff` on Linux for example), Glyff will nest
-   itself one level deeper into a `testnet` subfolder (`~/.glyff/testnet` on Linux). Note, on OSX
-   and Linux this also means that attaching to a running testnet node requires the use of a custom
-   endpoint since `glyff attach` will try to attach to a production node endpoint by default. E.g.
-   `glyff attach <datadir>/testnet/glyff.ipc`. Windows users are not affected by this.
- * Instead of connecting the main Glyff network, the client will connect to the test network,
-   which uses different P2P bootnodes, different network IDs and genesis states.
-   
-*Note: Although there are some internal protective measures to prevent transactions from crossing
-over between the main network and test network, you should make sure to always use separate accounts
-for play-money and real-money. Unless you manually move accounts, Glyff will by default correctly
-separate the two networks and will not make any accounts available between them.*
 
 ### Configuration
 
@@ -163,106 +122,6 @@ doing so! Hackers on the internet are actively trying to subvert Glyff nodes wit
 Further, all browser tabs can access locally running webservers, so malicious webpages could try to
 subvert locally available APIs!**
 
-### Operating a private network
-
-Maintaining your own private network is more involved as a lot of configurations taken for granted in
-the official networks need to be manually set up.
-
-#### Defining the private genesis state
-
-First, you'll need to create the genesis state of your networks, which all nodes need to be aware of
-and agree upon. This consists of a small JSON file (e.g. call it `genesis.json`):
-
-```json
-{
-  "config": {
-        "chainId": 0,
-        "homesteadBlock": 0,
-        "eip155Block": 0,
-        "eip158Block": 0
-    },
-  "alloc"      : {},
-  "coinbase"   : "0x0000000000000000000000000000000000000000",
-  "difficulty" : "0x20000",
-  "extraData"  : "",
-  "gasLimit"   : "0x2fefd8",
-  "nonce"      : "0x0000000000000042",
-  "mixhash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "parentHash" : "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "timestamp"  : "0x00"
-}
-```
-
-The above fields should be fine for most purposes, although we'd recommend changing the `nonce` to
-some random value so you prevent unknown remote nodes from being able to connect to you. If you'd
-like to pre-fund some accounts for easier testing, you can populate the `alloc` field with account
-configs:
-
-```json
-"alloc": {
-  "0x0000000000000000000000000000000000000001": {"balance": "111111111"},
-  "0x0000000000000000000000000000000000000002": {"balance": "222222222"}
-}
-```
-
-With the genesis state defined in the above JSON file, you'll need to initialize **every** Glyff node
-with it prior to starting it up to ensure all blockchain parameters are correctly set:
-
-```
-$ glyff init path/to/genesis.json
-```
-
-#### Creating the rendezvous point
-
-With all nodes that you want to run initialized to the desired genesis state, you'll need to start a
-bootstrap node that others can use to find each other in your network and/or over the internet. The
-clean way is to configure and run a dedicated bootnode:
-
-```
-$ bootnode --genkey=boot.key
-$ bootnode --nodekey=boot.key
-```
-
-With the bootnode online, it will display an [`enode` URL](https://github.com/ethereum/wiki/wiki/enode-url-format)
-that other nodes can use to connect to it and exchange peer information. Make sure to replace the
-displayed IP address information (most probably `[::]`) with your externally accessible IP to get the
-actual `enode` URL.
-
-*Note: You could also use a full fledged Glyff node as a bootnode, but it's the less recommended way.*
-
-#### Starting up your member nodes
-
-With the bootnode operational and externally reachable (you can try `telnet <ip> <port>` to ensure
-it's indeed reachable), start every subsequent Glyff node pointed to the bootnode for peer discovery
-via the `--bootnodes` flag. It will probably also be desirable to keep the data directory of your
-private network separated, so do also specify a custom `--datadir` flag.
-
-```
-$ glyff --datadir=path/to/custom/data/folder --bootnodes=<bootnode-enode-url-from-above>
-```
-
-*Note: Since your network will be completely cut off from the main and test networks, you'll also
-need to configure a miner to process transactions and create new blocks for you.*
-
-#### Running a private miner
-
-Mining on the public Glyff network is a complex task as it's only feasible using GPUs, requiring
-an OpenCL or CUDA enabled `ethminer` instance. For information on such a setup, please consult the
-[EtherMining subreddit](https://www.reddit.com/r/EtherMining/) and the [Genoil miner](https://github.com/Genoil/cpp-ethereum)
-repository.
-
-In a private network setting however, a single CPU miner instance is more than enough for practical
-purposes as it can produce a stable stream of blocks at the correct intervals without needing heavy
-resources (consider running on a single thread, no need for multiple ones either). To start a Glyff
-instance for mining, run it with all your usual flags, extended by:
-
-```
-$ glyff <usual-flags> --mine --minerthreads=1 --etherbase=0x0000000000000000000000000000000000000000
-```
-
-Which will start mining blocks and transactions on a single CPU thread, crediting all proceedings to
-the account specified by `--etherbase`. You can further tune the mining by changing the default gas
-limit blocks converge to (`--targetgaslimit`) and the price transactions are accepted at (`--gasprice`).
 
 ## Contribution
 
