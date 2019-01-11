@@ -34,7 +34,9 @@ The glyff project executable is found in the `cmd` directory.
 
 ### Full node on the Glyff private testnet
 
-At present, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to the official seed nodes.  Request access to the private testnet [here](https://glyff.io/status.html). The private testnet works with toy funds, i.e. coins mined will have NO real-world value. 
+At present, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to the official seed nodes.  Request access to the private testnet [here](https://glyff.io/status.html). 
+
+Private testnet works with toy funds, i.e. coins mined will have NO real-world value. 
 
 To enable simple interaction withe Glyff private testnet, such as : create accounts; transfer funds; deploy and interact with contracts. For this particular use-case
 the user doesn't care about years-old historical data, so we can fast-sync quickly to the current
@@ -49,8 +51,8 @@ This command will:
  * Start glyff in fast sync mode (default, can be changed with the `--syncmode` flag), causing it to
    download more data in exchange for avoiding processing the entire history of the Glyff network,
    which is very CPU intensive.
- * Start up Glyff's built-in interactive [JavaScript console](https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console),
-   (via the trailing `console` subcommand) through which you can invoke all official [`web3` methods](https://github.com/ethereum/wiki/wiki/JavaScript-API)
+ * Start up Glyff's built-in interactive [JavaScript console](https://github.com/Glyff/glyff-node/wiki/JavaScript-Console),
+   (via the trailing `console` subcommand) through which you can invoke all official [`web3` methods](https://github.com/Glyff/wiki/wiki/Javascript-API)
    as well as Glyff's own [management APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs).
    This too is optional and if you leave it out you can always attach to an already running Glyff instance
    with `glyff attach`.
