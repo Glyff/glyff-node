@@ -14,7 +14,7 @@ on the wiki. Additionally, glyff depends on JPMorgan Chase's ZSL on Quorum,
 with its own set of [build
 requirements](https://github.com/jpmorganchase/zsl-q#building).
 
-Building glyff requires both a Go (version 1.8 or later) and a C/++ compiler.
+Building glyff requires both a Go (version 1.10) and a C/++ compiler.
 You can install them using your favourite package manager. Once the
 dependencies are installed, run
 
@@ -27,16 +27,16 @@ The glyff project executable is found in the `cmd` directory.
 
 | Command    | Description |
 |:----------:|-------------|
-| **`glyff`** | Our main Glyff CLI client. It is the entry point into the Glyff network (main-, test- or private net), capable of running as a full node (default) archive node (retaining all historical state) or a light node (retrieving data live). It can be used by other processes as a gateway into the Glyff network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `glyff --help` for command line options. |
+| **`glyff`** | Our main Glyff CLI client. It is the entry point into the Glyff network (main- and test net), capable of running as a full archive node. It can be used by other processes as a gateway into the Glyff network via JSON RPC endpoints exposed on top of HTTP, WebSocket and/or IPC transports. `glyff --help` for command line options. |
 
 
-## Running glyff
+## Running Glyff
 
 ### Full node on the Glyff private testnet
 
-At present, Glyff runs as a permissioned private testnet, which means partecipants have to be whitelisted before connecting to the official seed nodes.  Request access to the private testnet [here](https://glyff.io/status.html). 
+At present, Glyff runs as a private testnet, which means partecipants have to be whitelisted before connecting to the official seed nodes.  Request access to the private testnet [here](https://glyff.io/status.html). 
 
-Private testnet works with toy funds, i.e. coins mined will have NO real-world value. 
+Glyff private testnet works with toy funds, i.e. coins mined or received will have NO real-world value. 
 
 To enable simple interaction withe Glyff private testnet, such as : create accounts; transfer funds; deploy and interact with contracts. For this particular use-case
 the user doesn't care about years-old historical data, so we can fast-sync quickly to the current
@@ -73,17 +73,22 @@ To get an idea how the file should look like you can use the `dumpconfig` subcom
 $ glyff --your-favourite-flags dumpconfig
 ```
 
-#### Docker quick start
+## Docker quick start
 
 One of the quickest ways to get Glyff up and running on your machine is by using Docker:
 
+### Build image
+
 ```
-docker run -d --name glyff-node -v /Users/alice/glyff:/root \
-           -p 8545:8545 -p 30303:30303 \
-           glyff/glyff
+docker build -t glyff-node /home/user/glyff-node
 ```
 
-This will start glyff in fast-sync mode with a DB memory allowance of 1GB just as the above command does.  It will also create a persistent volume in your home directory for saving your blockchain as well as map the default ports. There is also an `alpine` tag available for a slim version of the image.
+### Run docker 
+```
+docker run -it glyff-node
+```
+
+This will start glyff in fast-sync mode with a DB memory allowance of 1GB just as the above command does.  It will also create a persistent volume in your home directory for saving your blockchain as well as map the default ports.
 
 Do not forget `--rpcaddr 0.0.0.0`, if you want to access RPC from other containers and/or hosts. By default, `glyff` binds to the local interface and RPC endpoints is not accessible from the outside.
 
@@ -91,8 +96,8 @@ Do not forget `--rpcaddr 0.0.0.0`, if you want to access RPC from other containe
 
 As a developer, sooner rather than later you'll want to start interacting with Glyff and the Glyff
 network via your own programs and not manually through the console. To aid this, Glyff has built in
-support for a JSON-RPC based APIs ([standard APIs](https://github.com/ethereum/wiki/wiki/JSON-RPC) and
-[Glyff specific APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)). These can be
+support for a JSON-RPC based APIs ([standard APIs](https://github.com/glyff/wiki/wiki/JSON-RPC) and
+[Glyff specific APIs](https://github.com/glyff/glyff-node/wiki/Management-APIs)). These can be
 exposed via HTTP, WebSockets and IPC (unix sockets on unix based platforms, and named pipes on Windows).
 
 The IPC interface is enabled by default and exposes all the APIs supported by Glyff, whereas the HTTP
@@ -145,7 +150,7 @@ Please make sure your contributions adhere to our coding guidelines:
  * Commit messages should be prefixed with the package(s) they modify.
    * E.g. "eth, rpc: make trace configs optional"
 
-Please see the [Developers' Guide](https://github.com/ethereum/go-ethereum/wiki/Developers'-Guide)
+Please see the [Developers' Guide](https://github.com/glyff/glyff-node/wiki/Developers-Guide)
 for more details on configuring your environment, managing project dependencies and testing procedures.
 
 ## License
