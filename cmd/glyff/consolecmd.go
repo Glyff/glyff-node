@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"path/filepath"
+	//"path/filepath"
 	"strings"
 	"syscall"
 
@@ -121,13 +121,13 @@ func remoteConsole(ctx *cli.Context) error {
 		if ctx.GlobalIsSet(utils.DataDirFlag.Name) {
 			path = ctx.GlobalString(utils.DataDirFlag.Name)
 		}
-		if path != "" {
+		/*if path != "" {
 			if ctx.GlobalBool(utils.TestnetFlag.Name) {
 				path = filepath.Join(path, "testnet")
 			} else if ctx.GlobalBool(utils.RinkebyFlag.Name) {
 				path = filepath.Join(path, "rinkeby")
 			}
-		}
+		}*/
 		endpoint = fmt.Sprintf("%s/glyff.ipc", path)
 	}
 	client, err := dialRPC(endpoint)
