@@ -88,13 +88,13 @@ type Ethereum struct {
 
 	miner     *miner.Miner
 	gasPrice  *big.Int
-	etherbase common.Address
+	glyffbase common.Address
 
 	networkId            uint64
 	netRPCService        *ethapi.PublicNetAPI
 	EnableNodePermission bool //Used for enabling / disabling node permissioning
 
-	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and etherbase)
+	lock sync.RWMutex // Protects the variadic fields (e.g. gas price and glyffbase)
 }
 
 func (s *Ethereum) AddLesServer(ls LesServer) {
@@ -133,7 +133,7 @@ func New(ctx *node.ServiceContext, config *Config) (*Ethereum, error) {
 		stopDbUpgrade:  stopDbUpgrade,
 		networkId:      config.NetworkId,
 		gasPrice:       config.GasPrice,
-		etherbase:      config.Etherbase,
+		glyffbase:      config.Glyffbase,
 		bloomRequests:  make(chan chan *bloombits.Retrieval),
 		bloomIndexer:   NewBloomIndexer(chainDb, params.BloomBitsBlocks),
 	}
@@ -311,48 +311,48 @@ func (s *Ethereum) ResetWithGenesisBlock(gb *types.Block) {
 	s.blockchain.ResetWithGenesisBlock(gb)
 }
 
-func (s *Ethereum) Etherbase() (eb common.Address, err error) {
+func (s *Ethereum) Glyffbase() (eb common.Address, err error) {
 	s.lock.RLock()
-	etherbase := s.etherbase
+	glyffbase := s.glyffbase
 	s.lock.RUnlock()
 
-	if etherbase != (common.Address{}) {
-		return etherbase, nil
+	if glyffbase != (common.Address{}) {
+		return glyffbase, nil
 	}
 	if wallets := s.AccountManager().Wallets(); len(wallets) > 0 {
 		if accounts := wallets[0].Accounts(); len(accounts) > 0 {
-			etherbase := accounts[0].Address
+			glyffbase := accounts[0].Address
 
 			s.lock.Lock()
-			s.etherbase = etherbase
+			s.glyffbase = glyffbase
 			s.lock.Unlock()
 
-			log.Info("Etherbase automatically configured", "address", etherbase)
-			return etherbase, nil
+			log.Info("Glyffbase automatically configured", "address", glyffbase)
+			return glyffbase, nil
 		}
 	}
-	return common.Address{}, fmt.Errorf("etherbase must be explicitly specified")
+	return common.Address{}, fmt.Errorf("glyffbase must be explicitly specified")
 }
 
 // set in js console via admin interface or wrapper from cli flags
-func (self *Ethereum) SetEtherbase(etherbase common.Address) {
+func (self *Ethereum) SetGlyffbase(glyffbase common.Address) {
 	self.lock.Lock()
-	self.etherbase = etherbase
+	self.glyffbase = glyffbase
 	self.lock.Unlock()
 
-	self.miner.SetEtherbase(etherbase)
+	self.miner.SetGlyffbase(glyffbase)
 }
 
 func (s *Ethereum) StartMining(local bool) error {
-	eb, err := s.Etherbase()
+	eb, err := s.Glyffbase()
 	if err != nil {
-		log.Error("Cannot start mining without etherbase", "err", err)
-		return fmt.Errorf("etherbase missing: %v", err)
+		log.Error("Cannot start mining without glyffbase", "err", err)
+		return fmt.Errorf("glyffbase missing: %v", err)
 	}
 	if clique, ok := s.engine.(*clique.Clique); ok {
 		wallet, err := s.accountManager.Find(accounts.Account{Address: eb})
 		if wallet == nil || err != nil {
-			log.Error("Etherbase account unavailable locally", "err", err)
+			log.Error("Glyffbase account unavailable locally", "err", err)
 			return fmt.Errorf("signer missing: %v", err)
 		}
 		clique.Authorize(eb, wallet.SignHash)

@@ -39,7 +39,7 @@ type testglyff struct {
 
 	// template variables for expect
 	Datadir   string
-	Etherbase string
+	Glyffbase string
 }
 
 func init() {
@@ -72,9 +72,9 @@ func runGeth(t *testing.T, args ...string) *testglyff {
 			if i < len(args)-1 {
 				tt.Datadir = args[i+1]
 			}
-		case arg == "-etherbase" || arg == "--etherbase":
+		case arg == "-glyffbase" || arg == "--glyffbase":
 			if i < len(args)-1 {
-				tt.Etherbase = args[i+1]
+				tt.Glyffbase = args[i+1]
 			}
 		}
 	}
