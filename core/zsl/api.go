@@ -252,25 +252,21 @@ func (api *PublicZSLAPI) GenerateZKeypair() (map[string]interface{}, error) {
 	result["a_pk"] = common.BytesToHash(apk[:])
 	result["viewingKey_skenc"] = common.BytesToHash(sk_enc) //Base58Encode(sk_enc, ProdViewingKey)
 	result["publicKey_pkenc"] = common.BytesToHash(pk_enc)
-	//result["zaddr"] 			= Base58Encode(addr, ProdAddress) //zaddr_1 //Base58Encode(addr, ProdAddress)
-	result["zaddr"] = zaddr_1 //zaddr_1 //Base58Encode(addr, ProdAddress)
-
-	//result["zapk"]			= c
-	//result["zpkenc"]			= d
+	result["shieldedAddress"] = zaddr_1 //zaddr_1 //Base58Encode(addr, ProdAddress)
 
 	return result, nil
 
 }
-func (api *PublicZSLAPI) TestZaddr(zaddr string) (map[string]interface{}, error) {
+func (api *PublicZSLAPI) TestZaddr(shieldedAddress string) (map[string]interface{}, error) {
 	result := make(map[string]interface{})
 
-	b, _ := hex.DecodeString(strings.TrimPrefix(zaddr, "0x"))
+	b, _ := hex.DecodeString(strings.TrimPrefix(shieldedAddress, "0x"))
 	out_pk_1 := common.BytesToHash(b[0:32])
 	out_pkenc_1 := common.BytesToHash(b[32:64])
 
 	result["out_pk_1"] = out_pk_1
 	result["out_pkenc_1"] = out_pkenc_1
-	result["zaddr"] = zaddr
+	result["shieldedAddress"] = shieldedAddress
 
 	return result, nil
 
@@ -494,12 +490,12 @@ func (api *PublicZSLAPI) CreateUnshielding(rho common.Hash, sk common.Hash, valu
 func (api *PublicZSLAPI) CreateShieldedTransfer(
 	rho_1 common.Hash, sk_1 common.Hash, value_1 float64, treeIndex_1 float64, authPath_1 []string,
 	rho_2 common.Hash, sk_2 common.Hash, value_2 float64, treeIndex_2 float64, authPath_2 []string,
-	out_rho_1 common.Hash, zaddr string, out_value_1 float64,
+	out_rho_1 common.Hash, shieldedAddress string, out_value_1 float64,
 	out_rho_2 common.Hash, out_pk_2 common.Hash, out_value_2 float64,
 ) (map[string]interface{}, error) {
 	result := make(map[string]interface{})
 
-	b, _ := hex.DecodeString(strings.TrimPrefix(zaddr, "0x"))
+	b, _ := hex.DecodeString(strings.TrimPrefix(shieldedAddress, "0x"))
 	out_pk_1 := common.BytesToHash(b[0:32])
 	out_pkenc_1 := common.BytesToHash(b[32:64])
 
