@@ -504,10 +504,14 @@ func (c *verifyUnshielding) Run(in []byte) ([]byte, error) {
 
 	var spend_nf [32]byte
 	var rt [32]byte
+	var addr [20]byte
 	copy(spend_nf[:], in[:32])
 	copy(rt[:], in[32:64])
-	noteValue := binary.BigEndian.Uint64(in[88:96])
-	proofSize := binary.BigEndian.Uint64(in[120:128]) // should be 584
+	copy(addr[:], in[76:96]) // type address === uint160
+	noteValue := binary.BigEndian.Uint64(in[120:128])
+	proofSize := binary.BigEndian.Uint64(in[152:160]) // should be 584
+
+	fmt.Sprintf("ZSL_PROOF_SIZE is: %d proofSize is %d.\n", ZSL_PROOF_SIZE, proofSize)
 
 	if proofSize != ZSL_PROOF_SIZE {
 		msg := fmt.Sprintf("ZSL error, proof must have size of %d bytes, not %d.\n", ZSL_PROOF_SIZE, proofSize)
@@ -516,9 +520,9 @@ func (c *verifyUnshielding) Run(in []byte) ([]byte, error) {
 	}
 
 	var proof [ZSL_PROOF_SIZE]byte
-	copy(proof[:], in[128:])
+	copy(proof[:], in[160:])
 
-	result := snark.VerifyUnshielding(proof, spend_nf, rt, noteValue)
+	result := snark.VerifyUnshielding(proof, spend_nf, rt, addr, noteValue)
 	var b byte
 	if result {
 		b = 1
@@ -527,9 +531,10 @@ func (c *verifyUnshielding) Run(in []byte) ([]byte, error) {
 	log.Info("verifyUnshieldingFunc: ", hex.EncodeToString(in))
 	log.Info("spend_nf: ", hex.EncodeToString(spend_nf[:]))
 	log.Info("      rt: ", hex.EncodeToString(rt[:]))
+	log.Info("    addr: ", hex.EncodeToString(addr[:]))
 	log.Info("   value: ", noteValue)
 	log.Info("    size: ", proofSize)
-	log.Info("   proof: ", hex.EncodeToString(in[128:]))
+	log.Info("   proof: ", hex.EncodeToString(proof[:]))
 	log.Info("  result: ", result)
 
 	return []byte{b}, nil
