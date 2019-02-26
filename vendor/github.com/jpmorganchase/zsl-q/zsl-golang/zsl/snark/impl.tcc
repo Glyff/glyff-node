@@ -30,15 +30,13 @@ using namespace std;
 typedef Fr<default_r1cs_ppzksnark_pp> FieldT;
 
 #include <fstream>
-
-const char* homeDir = getenv("HOME");
-
+    
 template<typename T>
-void saveToFile(std::string path, T& obj) {
+void saveToFile(std::string filename, T& obj) {
     std::stringstream ss;
     ss << obj;
     std::ofstream fh;
-    fh.open(path, std::ios::binary);
+    fh.open(filename, std::ios::binary);
     ss.rdbuf()->pubseekpos(0, std::ios_base::out);
     fh << ss.rdbuf();
     fh.flush();
@@ -46,15 +44,16 @@ void saveToFile(std::string path, T& obj) {
 }
 
 template<typename T>
-void loadFromFile(std::string path, T& objIn) {
+void loadFromFile(std::string filename, T& objIn) {
     std::stringstream ss;
-    std::ifstream fh(path, std::ios::binary);
+    std::string home = std::getenv("HOME");
+    std::string glyffdir = "/.glyff/";
+    std::string fullpath = home + glyffdir + filename;
+    std::ifstream fh(fullpath, std::ios::binary);
 
     ss << fh.rdbuf();
     fh.close();
-
     ss.rdbuf()->pubseekpos(0, std::ios_base::in);
-
     ss >> objIn;
 }
 
