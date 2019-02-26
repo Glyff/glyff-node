@@ -17,7 +17,7 @@ WORKDIR /glyff
 
 RUN make glyff
 
-RUN curl -LO https://github.com/Glyff/glyff-sprout-params/releases/download/v0.1.0/glyff-keys.tar
+RUN curl -LO https://github.com/Glyff/glyff-sprout-params/releases/download/v0.2.0/glyff-keys.tar
 
 RUN tar xf glyff-keys.tar ; rm glyff-keys.tar
 
